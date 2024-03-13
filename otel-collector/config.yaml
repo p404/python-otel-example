@@ -1,9 +1,13 @@
 receivers:
-  otlp:
+  otlp/notls:
     protocols:
       grpc:
-        endpoint: 0.0.0.0:4317
+        endpoint: otel-collector:4317
 exporters:
+  otlp:
+    endpoint: jaeger-all-in-one:4317
+    tls:
+      insecure: true
   debug:
     verbosity: detailed
 service:
@@ -12,5 +16,5 @@ service:
       encoding: json
   pipelines:
     traces:
-      receivers: [otlp]
-      exporters: [debug]
+      receivers: [otlp/notls]
+      exporters: [debug, otlp]

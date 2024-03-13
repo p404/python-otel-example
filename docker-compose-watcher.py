@@ -29,7 +29,7 @@ def rebuild_and_restart_services():
         print("Docker Compose services restarted successfully.")
         
         print("Fetching Docker Compose logs...")
-        command = "docker-compose logs | awk -F' [|] ' '{print \"{\\\"container_name\\\":\\\"\" $1 \"\\\", \" substr($2, 2) }' | jq ."
+        command = "docker-compose logs"
         subprocess.run(command, shell=True, check=True, executable="/bin/bash")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while building or restarting Docker Compose services or fetching logs: {e}")
@@ -44,7 +44,7 @@ def main():
     rebuild_and_restart_services()
     
     observer.start()
-    print(f"Watching for changes in: {path}")
+    print(f">>>Watching for changes in: {path}")
     try:
         while True:
             time.sleep(1)
