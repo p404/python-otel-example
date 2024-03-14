@@ -21,9 +21,15 @@ services:
       - 8080:8080
     environment:
       - OTEL_SERVICE_NAME=webapp
-      #- OTEL_EXPORTER_OTLP_ENDPOINT="otel-collector:4317"
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=webapp
+      - OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector:4317"
   client:
     container_name: client
     build:
       context: .
       dockerfile: Dockerfile.client
+    environment:
+      - OTEL_SERVICE_NAME=client
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=client
+      - OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector:4317"
+      - WEBAPP_ENDPOINT="http://webapp:8080"

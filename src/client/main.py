@@ -1,15 +1,43 @@
-import json
+import sys
+import os
+import time
+import requests
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.propagate import set_global_textmap
+from opentelemetry.propagators.b3 import B3MultiFormat
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
-def hello_world():
-    message = "Hello, World! for the client!"
-    data = {
-        "message": message
-    }
-    json_data = json.dumps(data)
-    return json_data
+# Variables
+OTEL_ENDPOINT = os.getenv('OTEL_EXPORTER_OTLP_ENDPOINT', '').strip('"')
+WEBAPP_ENDPOINT = os.getenv('WEBAPP_ENDPOINT', '').strip('"')
+
+# OTEL Traces initialization
+propagator = B3MultiFormat()
+set_global_textmap(B3MultiFormat())
+provider = TracerProvider()
+otlp_exporter = OTLPSpanExporter(endpoint=OTEL_ENDPOINT)
+batch_processor = BatchSpanProcessor(otlp_exporter)
+provider.add_span_processor(batch_processor)
+
+
+trace.set_tracer_provider(provider)
+tracer = trace.get_tracer("client.custom.main")
+
+def send_requests(endpoint, count):
+    for _ in range(count):
+        with tracer.start_as_current_span("send-requests"):
+            carrier = {}
+            propagator.inject(carrier)
+            print(carrier)
+            requests.get(endpoint, headers=carrier)
 
 def main():
-    print(hello_world())
+    while True:
+        time.sleep(10)
+        hello_endpoint = "{}/hello".format(WEBAPP_ENDPOINT)
+        send_requests(hello_endpoint, 20)
 
 if __name__ == "__main__":
     main()
