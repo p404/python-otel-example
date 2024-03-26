@@ -22,10 +22,10 @@ jobs:
 
       - name: Build and Push Client Docker Image
         run: |
-          docker build -f Dockerfile.webapp -t ghcr.io/${{ github.repository }}/client:latest 
+          docker build -f Dockerfile.webapp -t ghcr.io/${{ github.repository }}/client:latest .
           docker push ghcr.io/${{ github.repository }}/client:latest 
 
       - name: Build and Push Server Docker Image
         run: |
-          docker build -f Dockerfile.webapp -t ghcr.io/${{ github.repository }}/webapp:latest 
+          docker build -f Dockerfile.webapp -t ghcr.io/${{ github.repository }}/webapp:latest . 
           docker push ghcr.io/${{ github.repository }}/webapp:latest
