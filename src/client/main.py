@@ -12,6 +12,7 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 # Variables
 OTEL_ENDPOINT = os.getenv('OTEL_EXPORTER_OTLP_ENDPOINT', '').strip('"')
 WEBAPP_ENDPOINT = os.getenv('WEBAPP_ENDPOINT', '').strip('"')
+TIME_TO_WAIT = int(os.getenv('TIME_BETWEEN_REQUESTS', '10'))
 
 # OTEL Traces initialization
 propagator = B3MultiFormat()
@@ -35,7 +36,7 @@ def send_requests(endpoint, count):
 
 def main():
     while True:
-        time.sleep(10)
+        time.sleep(TIME_TO_WAIT)
         hello_endpoint = "{}/hello".format(WEBAPP_ENDPOINT)
         send_requests(hello_endpoint, 20)
 

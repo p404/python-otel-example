@@ -21,6 +21,8 @@ spec:
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=client
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://otel-collector:4317"
+          value: "http://observe-traces.observe.svc.cluster.local:4317"
         - name: WEBAPP_ENDPOINT
           value: "http://webapp:8080"
+        - NAME: TIME_TO_WAIT
+          value: 10
