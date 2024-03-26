@@ -5,4 +5,5 @@ COPY src/webapp/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY src/webapp /app
 
+ENV PYTHONUNBUFFERED=1
 CMD ["python", "main.py"]

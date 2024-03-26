@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: ghcr.io/p404/python-otel-example/client:latest
+        env:
+        - name: OTEL_SERVICE_NAME
+          value: client
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=client
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-collector:4317"
+        - name: WEBAPP_ENDPOINT
+          value: "http://webapp:8080"
