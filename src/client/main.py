@@ -22,7 +22,6 @@ otlp_exporter = OTLPSpanExporter(endpoint=OTEL_ENDPOINT)
 batch_processor = BatchSpanProcessor(otlp_exporter)
 provider.add_span_processor(batch_processor)
 
-
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer("client.custom.main")
 
