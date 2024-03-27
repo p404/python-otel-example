@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp
+  name: webapp-otel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp
+      app: webapp-otel
   template:
     metadata:
       labels:
-        app: webapp
+        app: webapp-otel
     spec:
       containers:
-      - name: webapp
+      - name: webapp-otel
         image: ghcr.io/p404/python-otel-example/webapp:latest
         env:
         - name: OTEL_SERVICE_NAME
-          value: webapp
+          value: webapp-otel
         - name: OTEL_RESOURCE_ATTRIBUTES
-          value: service.name=webapp
+          value: service.name=webapp-otel
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: "http://observe-traces.observe.svc.cluster.local:4317"
         ports:
@@ -28,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp
+  name: webapp-otel
 spec:
   selector:
-    app: webapp
+    app: webapp-otel
   ports:
   - port: 8080
     targetPort: 8080

@@ -26,19 +26,19 @@ provider.add_span_processor(batch_processor)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer("client.custom.main")
 
-def send_requests(endpoint, count):
-    for _ in range(count):
-        with tracer.start_as_current_span("send-requests"):
-            carrier = {}
-            propagator.inject(carrier)
-            print(carrier)
-            requests.get(endpoint, headers=carrier)
+def send_request(endpoint):
+    with tracer.start_as_current_span("send-requests"):
+        carrier = {}
+        propagator.inject(carrier)
+        print(carrier)
+        requests.get(endpoint, headers=carrier)
 
 def main():
     while True:
         time.sleep(TIME_TO_WAIT)
         hello_endpoint = "{}/hello".format(WEBAPP_ENDPOINT)
-        send_requests(hello_endpoint, 20)
+        for _ in range(20):
+            send_request(hello_endpoint)
 
 if __name__ == "__main__":
     main()
