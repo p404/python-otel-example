@@ -21,7 +21,7 @@ spec:
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=webapp-otel
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://observe-traces.observe.svc.cluster.local:4317"
+          value: "${OTEL_EXPORTER_OTLP_ENDPOINT}"
         ports:
         - containerPort: 8080
 ---
