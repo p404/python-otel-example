@@ -18,8 +18,8 @@ Test your OLTP collector by simply using kubectl apply with your clusters.
 
 
 ## Versions
-- Python 3.8
-- OTEL Collector 0.95.0
+- Python `3.8`
+- OTEL Collector `0.95.0`
 
 ## Usage
 ### Prerequisites
